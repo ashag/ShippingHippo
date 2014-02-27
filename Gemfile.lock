@@ -10,6 +10,15 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
+    active_shipping (0.11.2)
+      active_utils (>= 1.0.1)
+      activesupport (>= 2.3.5)
+      builder
+      i18n
+      json (>= 1.5.1)
+    active_utils (2.0.2)
+      activesupport (>= 2.3.11)
+      i18n
     activemodel (4.0.2)
       activesupport (= 4.0.2)
       builder (~> 3.1.0)
@@ -72,6 +81,9 @@ GEM
       railties (>= 3.0.0)
     fastercsv (1.5.5)
     ffi (1.9.3)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     formatador (0.2.4)
     guard (2.4.0)
       formatador (>= 0.2.4)
@@ -114,6 +126,7 @@ GEM
     parser (2.1.5)
       ast (~> 1.1)
       slop (~> 3.4, >= 3.4.5)
+    pg (0.17.1)
     polyglot (0.3.4)
     powerpack (0.0.9)
     pry (0.9.12.6)
@@ -227,13 +240,16 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_shipping
   brakeman
   capybara (= 2.1.0)
   coffee-rails (~> 4.0.0)
   factory_girl_rails
+  figaro
   guard-rspec
   jbuilder (~> 1.2)
   jquery-rails
+  pg
   rails (= 4.0.2)
   rspec-rails
   rubocop

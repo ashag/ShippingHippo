@@ -9,6 +9,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'pg'
+gem 'active_shipping'
+gem 'figaro'
 
 
 
