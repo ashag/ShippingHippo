@@ -28,16 +28,24 @@ class RateRequest < ActiveRecord::Base
   end
 
   def set_package(package_array)
-    Package.new(package_array)
+    # weight is in ounces
+    dimensions = package_array[:height].to_f, package_array[:depth].to_f, package_array[:length].to_f
+    Package.new(package_array[:ounces], dimensions, :units => :imperial)
   end
 
-  def get_rates
-    self.rates.sort_by(&:price).collect { |rate| 
-      rate.service_name, 
-      rate.price, 
-      rate.delivery_date 
-    }
-  end
+
+  # active shipping method returns an array. Pointless to parse for Hippo??
+  # def get_rates
+  #   carrier_rates = {}
+
+  #   self.rates.sort_by(&:price).collect { |rate| 
+  #     carrier_rates[:service_name] = rate.service_name, 
+  #     carrier_rates[:price] = rate.price, 
+  #     carrier_rates[:devliery_date] = rate.delivery_date 
+  #   }
+
+  #   return carrier_rates
+  # end
 
   def self.fedex
     FedEx.new(:login => ENV["FEDEX_LOGIN"], 
@@ -54,11 +62,4 @@ class RateRequest < ActiveRecord::Base
 
   end
 
-  def self.drone
-
-  end
-
-  def self.bike_messenger
-
-  end
 end

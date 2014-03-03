@@ -1,5 +1,5 @@
 ShippingHippo::Application.routes.draw do
 
-  post 'search'       => 'rate_requests#search'
+  post '/rates'       => 'rate_requests#carrier_request'
   
 end
