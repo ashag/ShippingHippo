@@ -8,7 +8,7 @@ class RateRequest < ActiveRecord::Base
     @destination_parse = hash["destination"]
     @package_parse = hash["package"]
 
-    set_request_params(@origin_parse, @destination_parse, @@package_parse)    
+    set_request_params(@origin_parse, @destination_parse, @package_parse)    
   end
 
   def set_request_params(origin_parse, destination_parse, package_parse)
