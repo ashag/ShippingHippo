@@ -11,6 +11,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'pg'
 gem 'active_shipping'
 gem 'figaro'
+gem "httparty"
 
 group :test do 
   gem 'simplecov' # Code coverage for Ruby 1.9+ with a powerful configuration library and automatic merging of coverage across test suites

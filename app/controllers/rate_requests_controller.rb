@@ -36,5 +36,4 @@ class RateRequestsController < ApplicationController
     params.require(:destination).require(:country, :state, :city, :zip)
     params.require(:package).require(:weight, :height, :depth, :length)
   end
-
 end
