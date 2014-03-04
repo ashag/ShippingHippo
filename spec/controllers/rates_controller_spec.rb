@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe RatesController do
+describe RateRequestsController do
 
 end

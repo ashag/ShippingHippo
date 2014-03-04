@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe ShipController do
+describe RateResponsesController do
 
 end

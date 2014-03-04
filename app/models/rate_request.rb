@@ -3,34 +3,26 @@ class RateRequest < ActiveRecord::Base
   #  json hash can be passed to Hippo w/o parsing data first ex. @pets.as_json(only: [:id, :name, :age, :human])
 
 
-  def self.parse_hash(hash)
-    @origin_parse = hash["origin"]
-    @destination_parse = hash["destination"]
-    @package_parse = hash["package"]
+  def self.set_request_params(hash)
+    origin = set_origin(hash[:origin])
+    destination = set_destination(hash[:destination])
+    package = set_package(hash[:package])
 
-    set_request_params(@origin_parse, @destination_parse, @package_parse)    
+    return origin, destination, package
   end
 
-  def set_request_params(origin_parse, destination_parse, package_parse)
-    @origin = set_origin(origin_parse)
-    @destination = set_destination(destination_parse)
-    @package = set_package(package_parse)
-
-    return @origin, @destination, @package
-  end
-
-  def set_origin(origin_hash)
+  def self.set_origin(origin_hash)
     Location.new(origin_hash)
   end
 
-  def set_destination(destination_hash)
+  def self.set_destination(destination_hash)
     Location.new(destination_hash)
   end
 
-  def set_package(package_array)
+  def self.set_package(package_hash)
     # weight is in ounces
-    dimensions = package_array[:height].to_f, package_array[:depth].to_f, package_array[:length].to_f
-    Package.new(package_array[:ounces], dimensions, :units => :imperial)
+    dimensions = package_hash[:height].to_f, package_hash[:depth].to_f, package_hash[:length].to_f
+    Package.new(package_hash[:weight].to_i, dimensions, :units => :imperial)
   end
 
 
