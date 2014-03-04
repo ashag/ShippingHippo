@@ -25,20 +25,6 @@ class RateRequest < ActiveRecord::Base
     Package.new(package_hash[:weight].to_i, dimensions, :units => :imperial)
   end
 
-
-  # active shipping method returns an array. Pointless to parse for Hippo??
-  # def get_rates
-  #   carrier_rates = {}
-
-  #   self.rates.sort_by(&:price).collect { |rate| 
-  #     carrier_rates[:service_name] = rate.service_name, 
-  #     carrier_rates[:price] = rate.price, 
-  #     carrier_rates[:devliery_date] = rate.delivery_date 
-  #   }
-
-  #   return carrier_rates
-  # end
-
   def self.fedex
     FedEx.new(:login => ENV["FEDEX_LOGIN"], 
               :password => ENV["FEDEX_PASSWORD"], 

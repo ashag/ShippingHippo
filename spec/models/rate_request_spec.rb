@@ -31,15 +31,12 @@ describe RateRequest do
       expect(destination.city).to eq 'Seattle'
     end
 
-    it 'origin is assigned origin key data' do
+    # test that values are assigned to correct variable
+    it 'package is assigned package key data' do
       origin, destination, package = RateRequest.set_request_params(hash)
-      expect(orig.zip).to eq '98102'
+      expect(package.weight).to eq 70
     end
 
-
-  end
-
-  describe 'set origin' do 
 
   end
 
