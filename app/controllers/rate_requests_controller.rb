@@ -38,12 +38,9 @@ class RateRequestsController < ApplicationController
   # end
 
   def request_params
-    # create special error messages for requests with missing params?
-    o = params.require(:origin).permit(:country, :state, :city, :zip)
-    d = params.require(:destination).permit(:country, :state, :city, :zip)
-    p = params.require(:package).permit(:weight, :height, :depth, :length)
-
-    return [o, d, p]
+    params.require(:origin).permit(:country, :state, :city, :zip)
+    params.require(:destination).permit(:country, :state, :city, :zip)
+    params.require(:package).permit(:weight, :height, :depth, :length)
   end
 
 end
