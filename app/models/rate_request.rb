@@ -18,7 +18,7 @@ class RateRequest < ActiveRecord::Base
   end
 
   def self.set_package(package_hash)
-    dimensions = package_hash[:height].to_f, package_hash[:depth].to_f, package_hash[:length].to_f
+    dimensions = package_hash[:height].to_i, package_hash[:depth].to_i, package_hash[:length].to_i
     Package.new(package_hash[:weight].to_i, dimensions, :units => :imperial)
   end
 
@@ -31,10 +31,10 @@ class RateRequest < ActiveRecord::Base
 
   end
 
-  def self.usps
-    USPS.new(
-      )
-
+  def self.ups
+    UPS.new(:login => ENV["UPS_USER_ID"],
+            :password => ENV["UPS_PASSWORD"], 
+            :key => ENV["UPS_KEY"])
   end
 
 end

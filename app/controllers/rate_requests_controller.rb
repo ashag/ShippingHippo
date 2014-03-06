@@ -1,42 +1,50 @@
 class RateRequestsController < ApplicationController
-  # before_action :test_params
 
   def carrier_request
-    save_request(params)
+    save_request
     origin, destination, package = RateRequest.set_request_params(params)
-    fedex_client = RateRequest.fedex
-    @shipment = fedex_client.find_rates(origin, destination, package)    
+    json_for_hippo = response_for_hippo(origin, destination, package)
 
     respond_to do |format|
-      if @shipment
-        save_response(@shipment) 
-        format.html 
-        format.json { render json: @shipment, status: :ok}
+      if json_for_hippo
+        format.json { render json: json_for_hippo, status: :ok}
       else
-        format.html 
         format.json { render json: {msg: 'Error'} }
       end
     end
   end
 
-  def save_request(params)
-    request_string = params.to_s
-    RateRequest.create(request_data: request_string)
+
+  def response_for_hippo(origin, destination, package)
+    get_fedex = fedex_client_response(origin, destination, package)
+    get_ups = ups_client_response(origin, destination, package)
+    save_response(get_fedex, get_ups)
+    parse_to_hash(get_fedex, get_ups)
   end
 
-  def save_response(response_hash)
-    response_string = response_hash.to_s
-    RateResponse.create(response_data: response_string)
+  def parse_to_hash(fedex, ups)
+    fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
+    ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
+  end
+
+  def fedex_client_response(origin, destination, package)
+    RateRequest.fedex.find_rates(origin, destination, package)    
+  end
+
+  def ups_client_response(origin, destination, package)
+    RateRequest.ups.find_rates(origin, destination, package)    
+  end
+
+  def save_request
+    RateRequest.create(request_data: params.to_s)
+  end
+
+  def save_response(get_fedex, get_ups)
+    response_hash = get_fedex, get_ups
+    RateResponse.create(response_data: response_hash.to_s)
   end
 
   private
-
-  # def test_params
-  #   if params[:origin][:country].nil?
-  #     render json: { msg: "Country is missing."}, status: :bad_request and return
-  #   end  
-  # end
-
   def request_params
     params.require(:origin).permit(:country, :state, :city, :zip)
     params.require(:destination).permit(:country, :state, :city, :zip)
