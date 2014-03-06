@@ -23,9 +23,11 @@ class RateRequestsController < ApplicationController
     parse_responses(get_fedex, get_ups)
   end
 
-  def parse_responses(fedex, ups)
-    fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
-    ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
+
+  def parse_to_hash(fedex, ups)
+    f = fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
+    u = ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
+    return [f, u]
   end
 
   def fedex_client_response(origin, destination, package)
@@ -51,5 +53,4 @@ class RateRequestsController < ApplicationController
     params.require(:destination).permit(:country, :state, :city, :zip)
     params.require(:package).permit(:weight, :height, :depth, :length)
   end
-
 end
