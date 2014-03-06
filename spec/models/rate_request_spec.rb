@@ -36,8 +36,5 @@ describe RateRequest do
       origin, destination, package = RateRequest.set_request_params(hash)
       expect(package.weight).to eq 70
     end
-
-
   end
-
 end

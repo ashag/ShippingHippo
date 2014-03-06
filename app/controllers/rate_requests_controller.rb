@@ -5,6 +5,7 @@ class RateRequestsController < ApplicationController
     origin, destination, package = RateRequest.set_request_params(params)
     json_for_hippo = response_for_hippo(origin, destination, package)
 
+    json_for_hippo.inspect
     respond_to do |format|
       if json_for_hippo
         format.json { render json: json_for_hippo, status: :ok}
@@ -19,10 +20,10 @@ class RateRequestsController < ApplicationController
     get_fedex = fedex_client_response(origin, destination, package)
     get_ups = ups_client_response(origin, destination, package)
     save_response(get_fedex, get_ups)
-    parse_to_hash(get_fedex, get_ups)
+    parse_responses(get_fedex, get_ups)
   end
 
-  def parse_to_hash(fedex, ups)
+  def parse_responses(fedex, ups)
     fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
     ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
   end
