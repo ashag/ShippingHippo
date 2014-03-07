@@ -23,8 +23,8 @@ class RateRequestsController < ApplicationController
   end
 
   def parse_to_hash(fedex, ups)
-    f = fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
-    u = ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
+    f = fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price, delivery_range: rate.delivery_date} }
+    u = ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price, delivery_range: rate.delivery_date} }
     return [f, u]
   end
 
