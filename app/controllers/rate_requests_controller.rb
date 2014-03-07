@@ -1,5 +1,9 @@
 class RateRequestsController < ApplicationController
 
+  def homepage
+
+  end
+
   def carrier_request
     save_request
     origin, destination, package = RateRequest.set_request_params(params)
