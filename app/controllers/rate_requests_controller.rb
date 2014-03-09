@@ -1,13 +1,15 @@
 class RateRequestsController < ApplicationController
 
   def carrier_request
-    save_request
-    origin, destination, package = RateRequest.set_request_params(params)
-    json_for_hippo = response_for_hippo(origin, destination, package)
+    # save_request
+    # origin, destination, package = RateRequest.set_request_params(params)
+    rates = ShippingClient.new(params, carriers: [:ups, :fedex])
+    # rates = response_for_hippo(origin, destination, package)
 
     respond_to do |format|
-      if json_for_hippo
-        format.json { render json: json_for_hippo, status: :ok}
+      if rates
+        save_response(rates)
+        format.json { render json: rates, status: :ok}
       else
         format.json { render json: {msg: 'Error'} }
       end
@@ -15,12 +17,12 @@ class RateRequestsController < ApplicationController
   end
 
 
-  def response_for_hippo(origin, destination, package)
-    get_fedex = fedex_client_response(origin, destination, package)
-    get_ups = ups_client_response(origin, destination, package)
-    save_response(get_fedex, get_ups)
-    parse_to_hash(get_fedex, get_ups)
-  end
+  # def response_for_hippo(origin, destination, package)
+  #   get_fedex = fedex_client_response(origin, destination, package)
+  #   get_ups = ups_client_response(origin, destination, package)
+  #   save_response(get_fedex, get_ups)
+  #   parse_to_hash(get_fedex, get_ups)
+  # end
 
 
   def parse_to_hash(fedex, ups)
@@ -29,17 +31,17 @@ class RateRequestsController < ApplicationController
     return [f, u]
   end
 
-  def fedex_client_response(origin, destination, package)
-    RateRequest.fedex.find_rates(origin, destination, package)    
-  end
+  # def fedex_client_response(origin, destination, package)
+  #   RateRequest.fedex.find_rates(origin, destination, package)    
+  # end
 
-  def ups_client_response(origin, destination, package)
-    RateRequest.ups.find_rates(origin, destination, package)    
-  end
+  # def ups_client_response(origin, destination, package)
+  #   RateRequest.ups.find_rates(origin, destination, package)    
+  # end
 
-  def save_request
-    RateRequest.create(request_data: params.to_s)
-  end
+  # def save_request
+  #   RateRequest.create(request_data: params.to_s)
+  # end
 
   def save_response(get_fedex, get_ups)
     response_hash = get_fedex, get_ups

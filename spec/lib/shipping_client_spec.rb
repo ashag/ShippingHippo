@@ -11,7 +11,16 @@ describe ShippingClient do
 
   it "returns ups rates" do
     rates = ShippingClient.new(hash, carriers: [:ups, :fedex]).rates
+    # .rates is a method to obtain rates
+    # first hash includes rate objects for ups and fedex
+    # last array of hashes has values for ups, checks key 'price' as Integer
     expect(rates.first.first[:price]).to be_an_instance_of Integer
+  end
+
+  it "returns ups client object" do
+    # carriers[:ups]
+    rates = ShippingClient.new(hash, carriers: [:ups, :fedex]).rates
+    expect(rates.first.first).to be_a ActiveMerchant::Shipping::UPS
   end
 
   it 'returns Location for origin' do  
