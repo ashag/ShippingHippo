@@ -1,11 +1,8 @@
 class RateRequestsController < ApplicationController
 
   def carrier_request
-    # save_request
-    # origin, destination, package = RateRequest.set_request_params(params)
-    rates = ShippingClient.new(params, carriers: [:ups, :fedex])
-    # rates = response_for_hippo(origin, destination, package)
-
+    rates = ShippingClient.new(params)
+    puts rates.inspect
     respond_to do |format|
       if rates
         save_response(rates)
@@ -16,36 +13,8 @@ class RateRequestsController < ApplicationController
     end
   end
 
-
-  # def response_for_hippo(origin, destination, package)
-  #   get_fedex = fedex_client_response(origin, destination, package)
-  #   get_ups = ups_client_response(origin, destination, package)
-  #   save_response(get_fedex, get_ups)
-  #   parse_to_hash(get_fedex, get_ups)
-  # end
-
-
-  def parse_to_hash(fedex, ups)
-    f = fedex.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
-    u = ups.rates.sort_by(&:price).collect {|rate| { service: rate.service_name, price: rate.price} }
-    return [f, u]
-  end
-
-  # def fedex_client_response(origin, destination, package)
-  #   RateRequest.fedex.find_rates(origin, destination, package)    
-  # end
-
-  # def ups_client_response(origin, destination, package)
-  #   RateRequest.ups.find_rates(origin, destination, package)    
-  # end
-
-  # def save_request
-  #   RateRequest.create(request_data: params.to_s)
-  # end
-
-  def save_response(get_fedex, get_ups)
-    response_hash = get_fedex, get_ups
-    RateResponse.create(response_data: response_hash.to_s)
+  def save_response(rates)
+    RateResponse.create(response_data: rates.to_s)
   end
 
   private

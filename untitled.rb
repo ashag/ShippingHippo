@@ -1,0 +1,1 @@
+{"origin"=>{"country"=>"US", "state"=>"CA", "city"=>"Sacramento", "zip"=>"95835"}, "destination"=>{"country"=>"US", "state"=>"WA", "city"=>"Seattle", "zip"=>"98102"}, "package"=>{"weight"=>"90", "height"=>"12", "depth"=>"12", "length"=>"12"}}

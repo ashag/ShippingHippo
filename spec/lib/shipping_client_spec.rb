@@ -5,6 +5,9 @@ describe ShippingClient do
   let(:client) { ShippingClient.new(hash) }
 
   it "returns ups rates" do
+    # what this is asking for: create new ShippingClient, pass params hash
+    # set carriers to ups and fedex, carriers is an attribute of the instance
+    # call rates to return rates for carrier options, will be the parsed response
     rates = ShippingClient.new(hash, carriers: [:ups, :fedex]).rates
     expect(rates.first.first[:service]).to eq "ups"
   end
