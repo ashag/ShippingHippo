@@ -8,10 +8,6 @@ class ShippingClient
     @package = parse_package(hash[:package])
     save_request(hash)
 
-    puts @origin
-    puts @destination
-    puts @package
-
     carrier_rates
   end
 

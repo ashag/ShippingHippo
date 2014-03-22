@@ -2,7 +2,6 @@ class RateRequestsController < ApplicationController
 
   def carrier_request
     rates = ShippingClient.new(params)
-    puts rates.inspect
     respond_to do |format|
       if rates
         save_response(rates)
